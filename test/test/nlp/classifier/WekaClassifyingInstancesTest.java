@@ -26,10 +26,9 @@ public class WekaClassifyingInstancesTest {
 	// private String unlabeledDataArffPath =
 	// "./file/nlp_weka/classifying_arff/contact-lenses.arff";
 
-	// private String modelPath = "./file/nlp_weka/model/KnnClassifier.model";
-	private String modelPath = "./file/nlp_weka/model/libSVMClassifier.model";
-	// private String modelPath =
-	// "./file/nlp_weka/model/naiveBayesClassifier.model";
+	private String modelPath = "./file/nlp_weka/model/KnnClassifier.model";
+	// private String modelPath = "./file/nlp_weka/model/libSVMClassifier.model";
+	// private String modelPath = "./file/nlp_weka/model/naiveBayesClassifier.model";
 
 	@Before
 	public void loadUseClassiferModel() {

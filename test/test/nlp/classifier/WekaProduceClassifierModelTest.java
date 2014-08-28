@@ -33,7 +33,7 @@ public class WekaProduceClassifierModelTest {
 
 		ClassifierModelService classifierModelService = (ClassifierModelService) ApplicationContextFactory.appContext
 				.getBean("classifierModelService");
-		ClassifierModel classifierModel = classifierModelService.loadById(2);
+		ClassifierModel classifierModel = classifierModelService.loadById(1);
 		setClassifierModel(classifierModel);
 	}
 
