@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:aop="http://www.springframework.org/schema/aop" xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+	http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+	http://www.springframework.org/schema/context
+	http://www.springframework.org/schema/context/spring-context-3.0.xsd
+	http://www.springframework.org/schema/aop
+	http://www.springframework.org/schema/aop/spring-aop-3.0.xsd
+	http://www.springframework.org/schema/tx
+	http://www.springframework.org/schema/tx/spring-tx-3.0.xsd">
+
+	<!-- 使用properties文件配置数据源 -->
+	<bean
+		class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+		<property name="locations">
+			<value>classpath:jdbc-mysql.properties</value>
+		</property>
+	</bean>
+	<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource"
+		destroy-method="close">
+		<property name="driverClassName" value="${jdbc.driverClassName}" />
+		<property name="url" value="${jdbc.url}" />
+		<property name="username" value="${jdbc.username}" />
+		<property name="password" value="${jdbc.password}" />
+		<property name="maxActive" value="${jdbc.maxActive}" />
+		<property name="maxIdle" value="${jdbc.maxIdle}" />
+		<property name="removeAbandoned" value="${jdbc.removeAbandoned}" />
+		<property name="removeAbandonedTimeout" value="${jdbc.removeAbandonedTimeout}" />
+		<property name="maxWait" value="${jdbc.maxWait}" />
+	</bean>
+
+	<!-- 注入数据源和mabatis映射文件到sqlSession工厂 -->
+	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+		<property name="configLocation" value="classpath:mybatis-config.xml"></property>
+		<property name="dataSource" ref="dataSource"></property>
+	</bean>
+
+	<!--
+		配置事务管理器，注意这里的dataSource和SqlSessionFactoryBean的dataSource要一致，否则事务失效
+	-->
+	<bean id="transactionManager"
+		class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<property name="dataSource" ref="dataSource" />
+	</bean>
+
+	<!-- 配置编程式事务 -->
+	<bean id="txDefinition"
+		class="org.springframework.transaction.support.DefaultTransactionDefinition">
+		<property name="propagationBehaviorName" value="PROPAGATION_REQUIRED"></property>
+	</bean>
+
+	<!-- 公有继承抽象bean -->
+	<bean id="daoTemplate" abstract="true">
+		<property name="sqlSessionFactory" ref="sqlSessionFactory" />
+	</bean>
+
+	<!-- 引入site模块注入配置文件 -->
+	<import resource="struts_spring_xml/daoSiteContext.xml" />
+	<!-- 引入lucene检索模块配置文件 superhy -->
+	<import resource="struts_spring_xml/nlpLuceneContext.xml" />
+	<!-- 引入nlp实体模块配置文件 superhy -->
+	<import resource="struts_spring_xml/daoNlpEntityContext.xml" />
+	<import resource="struts_spring_xml/nlpWekaContext.xml" />
+	<import resource="struts_spring_xml/nlpHandleContext.xml" />
+	<import resource="struts_spring_xml/nlpLingpipeContext.xml" />
+	<!-- DD -->
+	<import resource="struts_spring_xml/daoIllegalWordTree.xml" />
+	<!-- wqs -->
+	<import resource="struts_spring_xml/daoCorpusProductContext.xml" />
+	<import resource="struts_spring_xml/daoSynWordsContext.xml" />
+
+</beans>

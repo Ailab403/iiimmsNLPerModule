@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="ims.subjectTree.dao.NetWordTreeMapper">
+
+<!-- ======================  dd===================== -->
+	<!-- 返回后台行业树的所有节点列表 -->
+	<select id="loadAllNetWordTree" resultType="NetWordTree" flushCache="true">
+		SELECT * FROM tbl_netWordTree ORDER BY netWordTreeId ASC 
+	</select>
+	
+	<!-- 返回后台行业树的所有badWordTreeId列表 
+	<select id="getAllBackTreeIds" resultType="int" flushCache="true">
+		SELECT netWordTreeId FROM tbl_netWordTree
+	</select>
+	-->
+	<!-- 返回后台树所有根节点(行业节点)列表 -->
+	<select id="loadAllRootNetWordTree"  parameterType="int" resultType="NetWordTree" flushCache="true">
+		SELECT * FROM tbl_netWordTree WHERE parentId=-1
+	</select>
+	<!-- 获得行业树下拉框需要的数据(subjectId,title)-->
+	<select id="loadNetWordTreeComboxList"  resultType="NetWordTree" parameterType="int" flushCache="true"> 
+	 	SELECT netWordTreeId,treeTitle FROM tbl_netWordTree WHERE parentId=-1
+	</select>
+	
+	<!-- -->
+	<select id="loadNetWordTreePathList"  resultType="NetWordTree" parameterType="int" flushCache="true"> 
+	 	select * from tbl_netWordTree where wholePath like CONCAT('%',#{id},'%');
+	</select>
+	
+	<select id="listByNetWordTreeId" parameterType="int" resultType="NetWordTree" flushCache="true">
+	SELECT * FROM tbl_netWordTree WHERE netWordTreeId=#{id} 
+</select>
+
+  <!-- 新增一后台树节点 -->
+	<insert id="addNetWordTreeNode" parameterType="NetWordTree" useGeneratedKeys="true">
+		<selectKey keyProperty="netWordTreeId" resultType="int" order="AFTER">
+			select LAST_INSERT_ID() 
+		</selectKey> 
+		INSERT INTO  tbl_netWordTree (treeTitle,parentId,wholePath,createTime,treeExp)
+		VALUES (#{treeTitle,jdbcType=VARCHAR},#{parentId,jdbcType=INTEGER},
+		#{wholePath,jdbcType=INTEGER},#{createTime,jdbcType=DATE},#{treeExp,jdbcType=VARCHAR})
+	</insert>
+	
+	<update id="updateNetWordTree" parameterType="NetWordTree">
+		update tbl_netWordTree set treeTitle
+		= #{treeTitle}, parentId =
+		#{parentId}, wholePath =
+		#{wholePath}, createTime = #{createTime},
+		treeExp = #{treeExp} where netWordTreeId =
+		#{netWordTreeId}
+	</update>
+	
+	
+	<!--重名判断-->
+	<!-- 返回当前除了指定行业外的其他所有行业名称集合 -->
+	<select id="getNetWordTreeAllOtherTradeNames" parameterType="int" resultType="String" flushCache="true">
+		SELECT treeTitle FROM tbl_netWordTree WHERE netWordTreeId != #{backNodeId} AND parentId = -1
+	</select>
+	<!-- 返回指定节点的直接子节点的所有名字列表 -->
+	<select id="getNetWordTreeSubNodeNames" parameterType="int" resultType="String">
+	   select treeTitle from tbl_netWordTree BT where BT.parentId = #{parentId} 
+	</select>
+	<!-- 返回指定节点及其直接子节点的所有名字列表 -->
+	<select id="getNetWordTreeSelfAndSubNames" parameterType="int" resultType="String">
+	   select treeTitle from tbl_netWordTree BT where BT.parentId = #{parentId} or BT.netWordTreeId = #{parentId}
+	</select>
+	<!-- 指定节点返回其父节点、兄弟节点及其直接孩子节点的所有名字列表(不包含该节点自身) -->
+	<select id="getNetWordTree3GNodeNamesById" resultType="String">
+	   select treeTitle from tbl_netWordTree BT where (BT.parentId in (#{parentId},#{backNodeId}) or BT.netWordTreeId = #{parentId}) and BT.netWordTreeId != #{backNodeId}
+	</select>
+	
+	<!-- 删除指定的后台树节点 -->
+	<delete id="delNetWordTreeNodeById" parameterType="int">
+		DELETE FROM tbl_netWordTree WHERE netWordTreeId = #{netWordTreeId}
+	</delete>
+	
+		<!-- 返回指定编号的节点的直接孩子列表 -->
+	<select id="getNetWordTreeDirectChildrenById"  parameterType="int" resultType="NetWordTree" flushCache="true">
+		SELECT * FROM tbl_netWordTree WHERE parentId = #{parentId} ORDER BY netWordTreeId ASC 
+	</select>
+	
+</mapper>

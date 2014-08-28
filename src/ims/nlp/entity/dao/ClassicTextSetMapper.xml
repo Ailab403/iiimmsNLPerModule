@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="ims.nlp.entity.dao.ClassicTextSetMapper">
+
+	<insert id="add" parameterType="ClassicTextSet">
+		insert into tbl_classicTextSet
+		(setName, setNickName, rankNum, setLimitScore, setFolderPath,
+		setAuthor, buildTime,
+		setExp)
+		value(#{setName}, #{setNickName},
+		#{rankNum}, #{setLimitScore}, #{setFolderPath},
+		#{setAuthor},
+		#{buildTime}, #{setExp})
+	</insert>
+
+	<delete id="deleteById" parameterType="int">
+		delete from
+		tbl_classicTextSet where setId = #{setId}
+	</delete>
+
+	<update id="update" parameterType="ClassicTextSet">
+		update tbl_classicTextSet set
+		setName = #{setName}, setNickName = #{setNickName}, rankNum =
+		#{rankNum}, setLimitScore = #{setLimitScore}, setFolderPath =
+		#{setFolderPath}, setAuthor =
+		#{setAuthor},
+		buildTime = #{buildTime},
+		setExp
+		= #{setExp}
+		where
+		setId =
+		#{setId}
+	</update>
+
+	<select id="loadById" parameterType="int" resultType="ClassicTextSet">
+		select *
+		from tbl_classicTextSet where setId = #{setId}
+	</select>
+
+	<select id="loadByNickName" parameterType="String" resultType="ClassicTextSet">
+		select * from tbl_classicTextSet where setNickName = #{setNickName}
+	</select>
+
+	<select id="listAll" resultType="ClassicTextSet">
+		select * from tbl_classicTextSet
+	</select>
+
+	<select id="listAllSetNeg" resultType="ClassicTextSet">
+		select * from
+		tbl_classicTextSet where setId != 1
+	</select>
+
+</mapper>

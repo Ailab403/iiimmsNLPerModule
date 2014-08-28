@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="ims.nlp.entity.dao.CorpusTextMapper">
+	<!-- 关联映射 -->
+	<resultMap type="CorpusText" id="corpusTextMap" autoMapping="true">
+		<id column="textId" property="textId" />
+		<id column="blongSetId" property="blongSetId" />
+		<id column="labeledSetId" property="labeledSetId" />
+		<id column="taskLogId" property="taskLogId" />
+		<id column="siteId" property="siteId" />
+		<association property="blongClassicTextSet" column="blongSetId"
+			javaType="ClassicTextSet" select="getBlongClassicTextSetById">
+		</association>
+		<association property="labeledClassicTextSet" column="labeledSetId"
+			javaType="ClassicTextSet" select="getLabeledClassicTextSetById">
+		</association>
+		<association property="taskLog" column="taskLogId"
+			javaType="TaskLog" select="getTaskLogById">
+		</association>
+		<association property="site" column="siteId" javaType="Site"
+			select="getSiteById">
+		</association>
+	</resultMap>
+
+	<!-- 关联嵌套查询，不是本表的查询， 需要清空缓存，查询方法名前缀改为“get”以示区别 -->
+	<select id="getBlongClassicTextSetById" parameterType="int"
+		resultType="ClassicTextSet">
+		select * from tbl_classicTextSet where setId =
+		#{blongSetId}
+	</select>
+	<select id="getLabeledClassicTextSetById" parameterType="int"
+		resultType="ClassicTextSet">
+		select * from tbl_classicTextSet where setId =
+		#{labeledSetId}
+	</select>
+	<select id="getTaskLogById" parameterType="String" resultType="TaskLog">
+		select * from tbl_taskLog where taskLogId = #{taskLogId}
+	</select>
+	<select id="getSiteById" parameterType="int" resultType="Site">
+		select *
+		from tbl_site where siteId = #{siteId}
+	</select>
+
+	<insert id="add" parameterType="CorpusText">
+		insert into tbl_corpusText
+		(blongSetId, labeledSetId, taskLogId, siteId, nodeId, filePath,
+		inTestFolder, polarityScore, subjectScore,
+		buildTime)
+		value
+		(#{blongSetId}, #{labeledSetId},
+		#{taskLogId},
+		#{siteId}, #{nodeId},
+		#{filePath}, #{inTestFolder}, #{polarityScore}, #{subjectScore},
+		#{buildTime})
+	</insert>
+
+	<delete id="deleteById" parameterType="int">
+		delete from tbl_corpusText
+		where textId = #{textId}
+	</delete>
+
+	<delete id="deleteBySetId" parameterType="int">
+		delete from
+		tbl_corpusText where setId = #{setId}
+	</delete>
+
+	<delete id="deleteByTaskLogId" parameterType="int">
+		delete from
+		tbl_corpusText where taskLogId = #{taskLogId}
+	</delete>
+
+	<delete id="deleteBySiteId" parameterType="int">
+		delete from
+		tbl_corpusText where siteId = #{siteId}
+	</delete>
+
+	<delete id="deleteByNodeId" parameterType="String">
+		delete from
+		tbl_corpusText where nodeId = #{nodeId}
+	</delete>
+
+	<update id="update" parameterType="CorpusText">
+		update tbl_corpusText set
+		blongSetId = #{blongSetId}, labeledSetId = #{labeledSetId}, taskLogId
+		= #{taskLogId}, siteId = #{siteId}, nodeId
+		= #{nodeId}, filePath =
+		#{filePath}, inTestFolder = #{inTestFolder}, polarityScore =
+		#{polarityScore}, subjectScore = #{subjectScore}, buildTime =
+		#{buildTime}
+		where
+		textId = #{textId}
+	</update>
+
+	<select id="loadById" parameterType="int" resultMap="corpusTextMap">
+		select *
+		from tbl_corpusText where textId = #{textId}
+	</select>
+
+	<select id="listByNodeId" parameterType="String" resultMap="corpusTextMap">
+		select *
+		from tbl_corpusText where nodeId = #{nodeId}
+	</select>
+
+	<select id="listByInTestFolder" parameterType="int" resultMap="corpusTextMap">
+		select * from tbl_corpusText where inTestFolder = #{inTestFolder}
+	</select>
+
+	<select id="listByTaskLogId" parameterType="int" resultMap="corpusTextMap">
+		select * from tbl_corpusText where taskLogId = #{taskLogId}
+	</select>
+
+	<select id="listBySiteId" parameterType="int" resultMap="corpusTextMap">
+		select *
+		from tbl_corpusText where siteId = #{siteId}
+	</select>
+
+	<select id="listAll" resultMap="corpusTextMap">
+		select * from
+		tbl_corpusText
+	</select>
+
+	<select id="listByBlongSetId" parameterType="int" resultMap="corpusTextMap">
+		select *
+		from tbl_corpusText where blongSetId = #{blongSetId}
+	</select>
+
+	<select id="loadByFileNameInAllNeg" parameterType="String"
+		resultMap="corpusTextMap">
+		select * from tbl_corpusText where labeledSetId != 1 and
+		filePath like #{fileName}
+	</select>
+
+	<select id="loadByFileNameInAll" parameterType="String"
+		resultMap="corpusTextMap">
+		select * from tbl_corpusText where labeledSetId = 1 and
+		filePath like #{fileName}
+	</select>
+
+</mapper>

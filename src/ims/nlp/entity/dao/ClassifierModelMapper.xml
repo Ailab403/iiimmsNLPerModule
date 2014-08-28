@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="ims.nlp.entity.dao.ClassifierModelMapper">
+
+	<insert id="add" parameterType="ClassifierModel">
+		insert into tbl_classifierModel
+		(modelName, modelObj, arffName, modelPath, modelTool, modelParame,
+		backloadParame,
+		activeState
+		modelCreateTime, modelExp) value
+		(#{modelName},
+		#{modelObj}, #{arffName},
+		#{modelPath}, #{modelTool},
+		#{modelParame}, #{backloadParame},
+		#{activeState}, #{modelCreateTime},
+		#{modelExp})
+	</insert>
+
+	<delete id="deleteById" parameterType="int">
+		delete from
+		tbl_classifierModel where modelId = #{modelId}
+	</delete>
+
+	<update id="update" parameterType="ClassifierModel">
+		update tbl_classifierModel set
+		modelName = #{modelName}, modelObj = #{modelObj}, arffName =
+		#{arffName}, modelPath =
+		#{modelPath}, modelTool = #{modelTool},
+		modelParame = #{modelParame}, backloadParame = #{backloadParame},
+		activeState = #{activeState},
+		modelCreateTime = #{modelCreateTime},
+		modelExp = #{modelExp} where
+		modelId = #{modelId}
+	</update>
+
+	<select id="loadById" parameterType="int" resultType="ClassifierModel">
+		select *
+		from
+		tbl_classifierModel where modelId = #{modelId}
+	</select>
+
+	<select id="listAll" resultType="ClassifierModel">
+		select * from
+		tbl_classifierModel
+	</select>
+
+	<select id="listByActiveState" resultType="ClassifierModel">
+		select * from
+		tbl_classifierModel where activeState = 1
+	</select>
+
+	<select id="listByActiveStateNeg" resultType="ClassifierModel">
+		select * from
+		tbl_classifierModel where activeState = 0
+	</select>
+
+</mapper>

@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="ims.nlp.entity.dao.ClassifyResBuffMapper">
+	<!-- 关联映射 -->
+	<resultMap type="ClassifyResBuff" id="classifyResBuffMap"
+		autoMapping="true">
+		<id column="classifyResId" property="classifyResId" />
+		<id column="classifyLogId" property="classifyLogId" />
+		<id column="textId" property="textId" />
+		<id column="resSetId" property="resSetId" />
+		<id column="labeledSetId" property="labeledSetId" />
+		<id column="siteId" property="siteId" />
+		<association property="classifyLog" column="classifyLogId"
+			javaType="ClassifyLog" select="getClassifyLogById">
+		</association>
+		<association property="corpusText" column="textId"
+			javaType="CorpusText" select="getCorpusTextById">
+		</association>
+		<association property="resClassicTextSet" column="resSetId"
+			javaType="ClassicTextSet" select="getResClassicTextSetById">
+		</association>
+		<association property="labeledClassicTextSet" column="labeledSetId"
+			javaType="ClassicTextSet" select="getLabeledClassicTextSetById">
+		</association>
+		<association property="site" column="siteId" javaType="Site"
+			select="getSiteById">
+		</association>
+	</resultMap>
+
+	<!-- 关联嵌套查询，不是本表的查询， 需要清空缓存，查询方法名前缀改为“get”以示区别 -->
+	<select id="getClassifyLogById" parameterType="String"
+		resultType="ClassifyLog">
+		select * from tbl_classifyLog where classifyLogId =
+		#{classifyLogId}
+	</select>
+	<select id="getCorpusTextById" parameterType="int" resultType="CorpusText">
+		select * from tbl_corpusText where textId = #{textId}
+	</select>
+	<select id="getResClassicTextSetById" parameterType="int"
+		resultType="ClassicTextSet">
+		select * from tbl_classicTextSet where setId = #{resSetId}
+	</select>
+	<select id="getLabeledClassicTextSetById" parameterType="int"
+		resultType="ClassicTextSet">
+		select * from tbl_classicTextSet where setId =
+		#{labeledSetId}
+	</select>
+	<select id="getSiteById" parameterType="int" resultType="Site">
+		select *
+		from tbl_site where siteId = #{siteId}
+	</select>
+
+	<insert id="add" parameterType="ClassifyResBuff">
+		insert into tbl_classifyResBuff
+		(classifyLogId, textId, resSetId, blongSetId, labeledSetId,
+		limitScore,
+		trulyScore,
+		classifyFilePath) value (#{classifyLogId},
+		#{textId},
+		#{resSetId}, #{blongSetId}, #{labeledSetId},
+		#{limitScore},
+		#{trulyScore},
+		#{classifyFilePath})
+	</insert>
+
+	<delete id="deleteById" parameterType="int">
+		delete from
+		tbl_classifyResBuff where classifyResId = #{classifyResId}
+	</delete>
+
+	<update id="update" parameterType="ClassifyResBuff">
+		update tbl_classifyResBuff set
+		classifyLogId = #{classifyLogId}, textId = #{textId}, resSetId =
+		#{resSetId}, blongSetId = #{blongSetId}, labeledSetId =
+		#{labeledSetId}, limitScore =
+		#{limitScore}, trulyScore =
+		#{trulyScore},
+		classifyFilePath =
+		#{classifyFilePath} where
+		classifyResId =
+		#{classifyResId}
+	</update>
+
+	<select id="loadById" parameterType="int" resultMap="classifyResBuffMap">
+		select *
+		from tbl_classifyResBuff where classifyResId = #{classifyResId}
+	</select>
+
+	<select id="listAll" resultMap="classifyResBuffMap">
+		select * from tbl_classifyResBuff
+	</select>
+
+	<select id="listByResLabeledSetIdAndLogId" parameterType="map"
+		resultMap="classifyResBuffMap">
+		select * from tbl_classifyResBuff where resSetId = #{setId}
+		and
+		labeledSetId = #{setId} and classifyLogId = #{logId}
+	</select>
+
+	<select id="listByResSetIdAndLogId" parameterType="map"
+		resultMap="classifyResBuffMap">
+		select * from tbl_classifyResBuff where resSetId = #{setId}
+		and
+		classifyLogId = #{logId}
+	</select>
+
+	<select id="listByLabeledSetIdAndLogIdGroupTextId"
+		parameterType="map" resultMap="classifyResBuffMap">
+		select * from tbl_classifyResBuff where
+		labeledSetId = #{setId} and classifyLogId = #{logId} group by textId
+	</select>
+
+</mapper>

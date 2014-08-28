@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:aop="http://www.springframework.org/schema/aop" xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+	http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+	http://www.springframework.org/schema/context
+	http://www.springframework.org/schema/context/spring-context-3.0.xsd
+	http://www.springframework.org/schema/aop
+	http://www.springframework.org/schema/aop/spring-aop-3.0.xsd
+	http://www.springframework.org/schema/tx
+	http://www.springframework.org/schema/tx/spring-tx-3.0.xsd">
+
+	<!-- 处理索引sql数据库信息实体 -->
+	<bean id="handleIndexResult" class="ims.nlp.handle.HandleIndexResult">
+		<property name="indexService" ref="indexService"></property>
+		<property name="classicTextSetService" ref="classicTextSetService"></property>
+	</bean>
+
+	<!-- 处理分类任务sql数据库信息实体 -->
+	<bean id="handleClassifyLogResult" class="ims.nlp.handle.HandleClassifyLogResult">
+		<property name="classifyLogService" ref="classifyLogService"></property>
+	</bean>
+
+	<!-- 处理分类结果缓存表sql数据库信息实体 -->
+	<bean id="handleClassifyResBuffResult" class="ims.nlp.handle.HandleClassifyResBuffResult">
+		<property name="classifyResBuffService" ref="classifyResBuffService"></property>
+	</bean>
+
+	<!-- 处理分类总任务信息数据库操作实体 -->
+	<bean id="handleClassifyMissionResult" class="ims.nlp.handle.HandleClassifyMissionResult">
+		<property name="classifyMissionService" ref="classifyMissionService"></property>
+	</bean>
+
+</beans>

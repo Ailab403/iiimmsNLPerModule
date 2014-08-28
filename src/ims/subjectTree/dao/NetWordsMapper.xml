@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- 行业树根节点主题关键词 fxp -->
+<mapper namespace="ims.subjectTree.dao.NetWordsMapper">
+
+<!-- 返回NetWords中所有值 -->
+<select id="loadAllNetWords" resultType="NetWords" flushCache="true">
+	SELECT  * FROM tbl_netWords TW ORDER BY TW.netWordId ASC
+</select>
+
+<!-- 删除指定后台行业节点下的所有关键字 -->
+<delete id="delNetWordsByNetWordTreeId" parameterType="int">
+ 	DELETE FROM tbl_netWords WHERE netWordTreeId = #{netWordTreeId}
+</delete>
+
+<!-- 添加行业关键词 -->
+<insert id="insertNetWords" parameterType="NetWords" useGeneratedKeys="true" >
+     <selectKey keyProperty="netWordId" resultType="int" order="AFTER">
+			select LAST_INSERT_ID() 
+		</selectKey> 
+	INSERT INTO tbl_netWords (netWordTreeId,netWordCnt,saveDate)
+	VALUES(#{netWordTreeId,jdbcType=INTEGER},
+		#{netWordCnt,jdbcType=VARCHAR},#{saveDate,jdbcType=DATE})
+</insert>
+<!-- 根据subjectId返回行业关键词 -->
+<select id="loadNetWordsByNetWordTreeId" parameterType="int" resultType="NetWords" flushCache="true">
+	SELECT * FROM tbl_netWords WHERE netWordTreeId=#{netWordTreeId} 
+</select>
+
+</mapper>

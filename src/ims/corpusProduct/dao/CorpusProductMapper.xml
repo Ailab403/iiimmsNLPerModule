@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="ims.corpusProduct.dao.CorpusProductMapper">
+	<!-- 关联映射 -->
+	<resultMap type="CorpusProduct" id="CorpusProductMap">
+		<id column="corpusProductId" property="corpusProductId" />
+		<result column="setId" property="setId"/>
+		<result column="siteId" property="siteId"/>
+		<result column="postId" property="postId"/>
+		<association property="classicTextSet" column="setId"
+			javaType="ClassicTextSet" select="getSetById">
+		</association>
+		<association property="site" column="siteId"
+			javaType="Site" select="getSiteById">
+		</association>
+		<association property="post" column="postId" 
+			javaType="Post" select="getPostById">
+		</association>
+	</resultMap>
+
+	<!-- 关联嵌套查询，不是本表的查询， 需要清空缓存，查询方法名前缀改为“get”以示区别 -->
+	<select id="getSetById" parameterType="int" resultType="ClassicTextSet" flushCache="true">
+		select * from tbl_classictextset where setId = #{setId}
+	</select>
+	<select id="getSiteById" parameterType="int" resultType="Site" flushCache="true">
+		select * from tbl_site where siteId = #{siteId}
+	</select>
+	<select id="getPostById" parameterType="int" resultType="Post" flushCache="true">
+		select * from tbl_post where postId = #{postId}
+	</select>
+	
+    <!-- ===============================对数据库的相关操作================================ -->
+ 	<select id="listAll" resultMap="CorpusProductMap" flushCache="true">
+		select * from tbl_corpusproduct order by corpusProductId;
+	</select>
+	
+	<select id="lodeById" resultMap="CorpusProductMap" flushCache="true" parameterType="int">
+		select * from tbl_corpusproduct where corpusProductId = #{corpusProductId};
+ 	</select>
+ 	
+ 	<select id="lodeBySetId" resultMap="CorpusProductMap" flushCache="true" parameterType="int">
+		select * from tbl_corpusproduct where setId = #{setId};
+ 	</select>
+ 	
+ 	<select id="add" resultMap="CorpusProductMap" flushCache="true" parameterType="int">
+		update  tbl_corpusproduct set annexPath = #{annexPath} where corpusProductId = #{corpusProductId}
+ 	</select>
+	
+</mapper>

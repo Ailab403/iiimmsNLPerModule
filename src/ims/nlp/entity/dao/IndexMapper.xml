@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="ims.nlp.entity.dao.IndexMapper">
+	<!-- 关联映射 -->
+	<resultMap type="Index" id="indexMap" autoMapping="true">
+		<id column="indexId" property="indexId" />
+		<id column="setId" property="setId" />
+		<association property="classicTextSet" column="setId"
+			javaType="ClassicTextSet" select="getClassicTextSetById">
+		</association>
+	</resultMap>
+
+	<!-- 关联嵌套查询，不是本表的查询， 需要清空缓存，查询方法名前缀改为“get”以示区别 -->
+	<select id="getClassicTextSetById" parameterType="int"
+		resultType="ClassicTextSet">
+		select * from tbl_classicTextSet where setId = #{setId}
+	</select>
+
+	<insert id="add" parameterType="Index">
+		insert into tbl_index (setId,
+		indexName, indexPath, docNum, docDeletedNum, refreshTime, indexExp)
+		value (#{setId},
+		#{indexName}, #{indexPath}, #{docNum},
+		#{docDeletedNum}, #{refreshTime}, #{indexExp})
+	</insert>
+
+	<delete id="deleteById" parameterType="int">
+		delete from tbl_index
+		where indexId = #{indexId}
+	</delete>
+
+	<delete id="deleteBySetId" parameterType="int">
+		delete from tbl_index
+		where setId = #{setId}
+	</delete>
+
+	<update id="update" parameterType="Index">
+		update tbl_index set setId =
+		#{setId}, indexName = #{indexName}, indexPath = #{indexPath}, docNum =
+		#{docNum}, docDeletedNum = #{docDeletedNum}, refreshTime =
+		#{refreshTime}, indexExp = #{indexExp} where
+		indexId = #{indexId}
+	</update>
+
+	<select id="loadById" parameterType="int" resultMap="indexMap">
+		select *
+		from tbl_index where indexId = #{indexId}
+	</select>
+
+	<select id="loadBySetId" parameterType="int" resultMap="indexMap">
+		select *
+		from tbl_index where setId = #{setId}
+	</select>
+
+	<select id="listAll" resultMap="indexMap">
+		select * from tbl_index
+	</select>
+
+	<select id="listAllIdNeg" resultMap="indexMap">
+		select * from tbl_index
+		where indexId != #{indexId}
+	</select>
+
+	<select id="loadByIndexName" resultMap="indexMap">
+		select * from tbl_index
+		where indexName = #{indexName}
+	</select>
+
+</mapper>

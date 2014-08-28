@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="ims.nlp.entity.dao.ClassifyLogMapper">
+	<!-- 关联映射 -->
+	<resultMap type="ClassifyLog" id="classifyLogMap"
+		autoMapping="true">
+		<id column="classifyLogId" property="classifyLogId" />
+		<id column="missionId" property="missionId" />
+		<id column="modelId" property="modelId" />
+		<association property="classifyMission" column="missionId"
+			javaType="ClassifyMission" select="getClassifyMissionById">
+		</association>
+		<association property="classifierModel" column="modelId"
+			javaType="ClassifierModel" select="getClassifierModelById">
+		</association>
+	</resultMap>
+
+	<!-- 关联嵌套查询，不是本表的查询， 需要清空缓存，查询方法名前缀改为“get”以示区别 -->
+	<select id="getClassifyMissionById" parameterType="String"
+		resultType="ClassifyMission">
+		select * from tbl_classifyMission where missionId =
+		#{missionId}
+	</select>
+	<select id="getClassifierModelById" parameterType="int"
+		resultType="ClassifierModel">
+		select * from tbl_classifierModel where modelId =
+		#{modelId}
+	</select>
+
+	<insert id="add" parameterType="ClassifyLog">
+		insert into tbl_classifyLog
+		(classifyLogId, missionId, modelId, classifyType, startTime, costTime,
+		handleFileNum,
+		precisionRatio, recallRatio, f1TestValue,
+		classifyStatus, classifyExp)
+		value (#{classifyLogId}, #{missionId},
+		#{modelId},
+		#{classifyType}, #{startTime}, #{costTime},
+		#{handleFileNum},
+		#{precisionRatio}, #{recallRatio}, #{f1TestValue},
+		#{classifyStatus},
+		#{classifyExp})
+	</insert>
+
+	<delete id="deleteById" parameterType="String">
+		delete from
+		tbl_classifyLog where classifyLogId = #{classifyLogId}
+	</delete>
+
+	<update id="update" parameterType="ClassifyLog">
+		update tbl_classifyLog set
+		missionId = #{missionId},
+		modelId = #{modelId}, classifyType =
+		#{classifyType}, startTime =
+		#{startTime}, costTime = #{costTime},
+		handleFileNum =
+		#{handleFileNum}, precisionRatio =
+		#{precisionRatio},
+		recallRatio =
+		#{recallRatio}, f1TestValue =
+		#{f1TestValue},
+		classifyStatus =
+		#{classifyStatus}, classifyExp =
+		#{classifyExp} where
+		classifyLogId =
+		#{classifyLogId}
+	</update>
+
+	<select id="loadById" parameterType="String" resultMap="classifyLogMap">
+		select *
+		from tbl_classifyLog where classifyLogId = #{classifyLogId}
+	</select>
+
+	<select id="listAll" resultMap="classifyLogMap">
+		select * from tbl_classifyLog
+	</select>
+
+</mapper>

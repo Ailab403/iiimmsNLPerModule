@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:aop="http://www.springframework.org/schema/aop" xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+	http://www.springframework.org/schema/beans/spring-beans-3.0.xsd 
+	http://www.springframework.org/schema/aop 
+	http://www.springframework.org/schema/aop/spring-aop-3.0.xsd
+	http://www.springframework.org/schema/context
+    http://www.springframework.org/schema/context/spring-context-3.0.xsd">
+	<!-- Mapper dd  illegalWord-->
+	<bean id="illegalWordTreeMapper" class="org.mybatis.spring.mapper.MapperFactoryBean"
+		parent="daoTemplate">
+		<property name="mapperInterface" value="ims.subjectTree.dao.IllegalWordTreeMapper" />
+	</bean>
+	<bean id="illegalWordsMapper" class="org.mybatis.spring.mapper.MapperFactoryBean"
+		parent="daoTemplate">
+		<property name="mapperInterface" value="ims.subjectTree.dao.IllegalWordsMapper" />
+	</bean>
+
+	<!-- stopWords -->
+	<bean id="stopWordTreeMapper" class="org.mybatis.spring.mapper.MapperFactoryBean"
+		parent="daoTemplate">
+		<property name="mapperInterface" value="ims.subjectTree.dao.StopWordTreeMapper" />
+	</bean>
+	<bean id="stopWordsMapper" class="org.mybatis.spring.mapper.MapperFactoryBean"
+		parent="daoTemplate">
+		<property name="mapperInterface" value="ims.subjectTree.dao.StopWordsMapper" />
+	</bean>
+
+	<!-- netWords -->
+	<bean id="netWordTreeMapper" class="org.mybatis.spring.mapper.MapperFactoryBean"
+		parent="daoTemplate">
+		<property name="mapperInterface" value="ims.subjectTree.dao.NetWordTreeMapper" />
+	</bean>
+	<bean id="netWordsMapper" class="org.mybatis.spring.mapper.MapperFactoryBean"
+		parent="daoTemplate">
+		<property name="mapperInterface" value="ims.subjectTree.dao.NetWordsMapper" />
+	</bean>
+
+
+
+	<!-- Service illegalWord  dd-->
+	<bean id="illegalWordsService" class="ims.subjectTree.service.IllegalWordsServiceImpl">
+		<property name="illegalWordsMapper" ref="illegalWordsMapper"></property>
+		<property name="stopWordsMapper" ref="stopWordsMapper"></property>
+
+	</bean>
+
+	<bean id="illegalWordTreeService" class="ims.subjectTree.service.IllegalWordTreeServiceImpl">
+		<property name="illegalWordTreeMapper" ref="illegalWordTreeMapper"></property>
+		<property name="illegalWordsMapper" ref="illegalWordsMapper"></property>
+		<property name="illegalWordsService" ref="illegalWordsService"></property>
+	</bean>
+
+	<!-- Service stopWord  dd-->
+	<bean id="stopWordsService" class="ims.subjectTree.service.StopWordsServiceImpl">
+		<property name="stopWordsMapper" ref="stopWordsMapper"></property>
+	</bean>
+
+	<bean id="stopWordTreeService" class="ims.subjectTree.service.StopWordTreeServiceImpl">
+		<property name="stopWordTreeMapper" ref="stopWordTreeMapper"></property>
+		<property name="stopWordsMapper" ref="stopWordsMapper"></property>
+		<property name="stopWordsService" ref="stopWordsService"></property>
+	</bean>
+
+	<!-- Service netWord  dd-->
+	<bean id="netWordsService" class="ims.subjectTree.service.NetWordsServiceImpl">
+		<property name="netWordsMapper" ref="netWordsMapper"></property>
+	</bean>
+
+	<bean id="netWordTreeService" class="ims.subjectTree.service.NetWordTreeServiceImpl">
+		<property name="netWordTreeMapper" ref="netWordTreeMapper"></property>
+		<property name="netWordsMapper" ref="netWordsMapper"></property>
+		<property name="netWordsService" ref="netWordsService"></property>
+	</bean>
+
+	<!--
+		<bean id="createIllegalWordTreeAction"
+		class="ims.subjectTree.action.CreateIllegalWordTreeAction"> <property
+		name="illegalWordsService" ref="illegalWordsService"></property>
+		<property name="illegalWordTreeService"
+		ref="illegalWordTreeService"></property> <property
+		name="stopWordsService" ref="stopWordsService"></property> </bean>
+
+
+		<bean id="createStopWordTreeAction"
+		class="ims.subjectTree.action.CreateStopWordTreeAction"> <property
+		name="stopWordsService" ref="stopWordsService"></property> <property
+		name="stopWordTreeService" ref="stopWordTreeService"></property>
+		</bean> <bean id="createNetWordTreeAction"
+		class="ims.subjectTree.action.CreateNetWordTreeAction"> <property
+		name="netWordsService" ref="netWordsService"></property> <property
+		name="netWordTreeService" ref="netWordTreeService"></property> </bean>
+	-->
+
+
+</beans>

@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="ims.subjectTree.dao.StopWordTreeMapper">
+
+<!-- ======================  dd===================== -->
+	<!-- 返回后台行业树的所有节点列表 -->
+	<select id="loadAllStopWordTree" resultType="StopWordTree" flushCache="true">
+		SELECT * FROM tbl_stopWordTree ORDER BY stopWordTreeId ASC 
+	</select>
+	
+	<!-- 返回后台行业树的所有badWordTreeId列表
+	<select id="getAllBackTreeIds" resultType="int" flushCache="true">
+		SELECT stopWordTreeId FROM tbl_stopWordTree
+	</select>
+	 -->
+	<!-- 返回后台树所有根节点(行业节点)列表 -->
+	<select id="loadAllStopWordTreeRoot"  parameterType="int" resultType="StopWordTree" flushCache="true">
+		SELECT * FROM tbl_stopWordTree WHERE parentId=-1
+	</select>
+	<!-- 获得行业树下拉框需要的数据(subjectId,title)-->
+	<select id="loadStopWordTreeComboxList"  resultType="StopWordTree" parameterType="int" flushCache="true"> 
+	 	SELECT stopWordTreeId,treeTitle FROM tbl_stopWordTree WHERE parentId=-1
+	</select>
+	
+	<!-- -->
+	<select id="loadStopWordTreePathList"  resultType="StopWordTree" parameterType="int" flushCache="true"> 
+	 	select * from tbl_stopWordTree where wholePath like CONCAT('%',#{id},'%');
+	</select>
+	
+	<select id="listByStopWordTreeId" parameterType="int" resultType="StopWordTree" flushCache="true">
+	SELECT * FROM tbl_stopWordTree WHERE stopWordTreeId=#{id} 
+</select>
+
+  <!-- 新增一后台树节点 -->
+	<insert id="addStopWordTreeNode" parameterType="StopWordTree" useGeneratedKeys="true">
+		<selectKey keyProperty="stopWordTreeId" resultType="int" order="AFTER">
+			select LAST_INSERT_ID() 
+		</selectKey> 
+		INSERT INTO  tbl_stopWordTree (treeTitle,parentId,wholePath,createTime,treeExp)
+		VALUES (#{treeTitle,jdbcType=VARCHAR},#{parentId,jdbcType=INTEGER},
+		#{wholePath,jdbcType=INTEGER},#{createTime,jdbcType=DATE},#{treeExp,jdbcType=VARCHAR})
+	</insert>
+	
+	<update id="updateStopWordTree" parameterType="StopWordTree">
+		update tbl_stopWordTree set treeTitle
+		= #{treeTitle}, parentId =
+		#{parentId}, wholePath =
+		#{wholePath}, createTime = #{createTime},
+		treeExp = #{treeExp} where stopWordTreeId =
+		#{stopWordTreeId}
+	</update>
+	
+	
+	<!--重名判断-->
+	<!-- 返回当前除了指定行业外的其他所有行业名称集合 -->
+	<select id="getStopWordTreeAllOtherTradeNames" parameterType="int" resultType="String" flushCache="true">
+		SELECT treeTitle FROM tbl_stopWordTree WHERE stopWordTreeId != #{backNodeId} AND parentId = -1
+	</select>
+	<!-- 返回指定节点的直接子节点的所有名字列表 -->
+	<select id="getStopWordTreeSubNodeNames" parameterType="int" resultType="String">
+	   select treeTitle from tbl_stopWordTree BT where BT.parentId = #{parentId} 
+	</select>
+	<!-- 返回指定节点及其直接子节点的所有名字列表 -->
+	<select id="getStopWordTreeSelfAndSubNames" parameterType="int" resultType="String">
+	   select treeTitle from tbl_stopWordTree BT where BT.parentId = #{parentId} or BT.stopWordTreeId = #{parentId}
+	</select>
+	<!-- 指定节点返回其父节点、兄弟节点及其直接孩子节点的所有名字列表(不包含该节点自身) -->
+	<select id="getStopWordTree3GNodeNamesById" resultType="String">
+	   select treeTitle from tbl_stopWordTree BT where (BT.parentId in (#{parentId},#{backNodeId}) or BT.stopWordTreeId = #{parentId}) and BT.stopWordTreeId != #{backNodeId}
+	</select>
+	
+	<!-- 删除指定的后台树节点 -->
+	<delete id="delStopWordTreeNodeById" parameterType="int">
+		DELETE FROM tbl_stopWordTree WHERE stopWordTreeId = #{stopWordTreeId}
+	</delete>
+	
+		<!-- 返回指定编号的节点的直接孩子列表 -->
+	<select id="loadStopWordTreeDirectChildrenById"  parameterType="int" resultType="StopWordTree" flushCache="true">
+		SELECT * FROM tbl_stopWordTree WHERE parentId = #{parentId} ORDER BY stopWordTreeId ASC 
+	</select>
+	
+</mapper>

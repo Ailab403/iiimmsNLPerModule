@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:aop="http://www.springframework.org/schema/aop" 
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+	http://www.springframework.org/schema/beans/spring-beans-3.0.xsd 
+	http://www.springframework.org/schema/aop 
+	http://www.springframework.org/schema/aop/spring-aop-3.0.xsd
+	http://www.springframework.org/schema/context
+    http://www.springframework.org/schema/context/spring-context-3.0.xsd">
+    
+    <!-- ===================================== mapper_WQS ======================================= -->
+    <bean id="corpusProductMapper" class="org.mybatis.spring.mapper.MapperFactoryBean"  parent="daoTemplate">  
+		<property name="mapperInterface" value="ims.corpusProduct.dao.CorpusProductMapper" />  
+		<property name="sqlSessionFactory" ref="sqlSessionFactory"/>
+	</bean>
+	
+	<!--  ===================================== service_WQS ======================================= -->
+   <bean id="corpusProductService" class="ims.corpusProduct.service.CorpusProductServiceImpl">
+		<property name="corpusProductMapper" ref="corpusProductMapper" />
+		<property name="transactionManager" ref="transactionManager"></property>
+    	<property name="txDefinition" ref="txDefinition"></property>
+   </bean>
+   
+   <!-- <bean id="productEditMongoService" class="ims.nlp.mongo.service.ProductEditMongoServiceImpl">
+   </bean> -->
+   
+	<!-- ===================================== action_WQS ======================================= -->
+	<!-- <bean id="corpusProductAction" class="ims.corpusProduct.action.CorpusProductAction">
+		<property name="corpusProductService" ref="corpusProductService"></property>
+		<property name="classicTextSetService" ref="classicTextSetService"></property>
+		<property name="productEditMongoService" ref="productEditMongoService"></property>
+	</bean> -->
+	
+</beans>

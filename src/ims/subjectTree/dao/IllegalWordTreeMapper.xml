@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="ims.subjectTree.dao.IllegalWordTreeMapper">
+
+<!-- ======================  dd===================== -->
+	<!-- 返回后台行业树的所有节点列表 -->
+	<select id="loadAllIllegalWordTree" resultType="IllegalWordTree" flushCache="true">
+		SELECT * FROM tbl_illegalWordTree ORDER BY illegalWordTreeId ASC 
+	</select>
+	
+	<!-- 返回后台树所有根节点(行业节点)列表 -->
+	<select id="loadAllRootIllegalWordTree"  parameterType="int" resultType="IllegalWordTree" flushCache="true">
+		SELECT * FROM tbl_illegalWordTree WHERE parentId=-1
+	</select>
+	<!-- 获得行业树下拉框需要的数据(subjectId,title)-->
+	<select id="loadIllegalWordTreeComboxList"  resultType="IllegalWordTree" parameterType="int" flushCache="true"> 
+	 	SELECT illegalWordTreeId,treeTitle FROM tbl_illegalWordTree WHERE parentId=-1
+	</select>
+	
+	<!-- -->
+	<select id="loadIllegalWordTreePathList"  resultType="IllegalWordTree" parameterType="int" flushCache="true"> 
+	 	select * from tbl_illegalWordTree where wholePath like CONCAT('%',#{id},'%');
+	</select>
+	
+	<select id="listByIllegalWordTreeId" parameterType="int" resultType="IllegalWordTree" flushCache="true">
+	SELECT * FROM tbl_illegalWordTree WHERE illegalWordTreeId=#{id} 
+</select>
+
+  <!-- 新增一后台树节点 -->
+	<insert id="addIllegalWordTreeNode" parameterType="IllegalWordTree" useGeneratedKeys="true">
+		<selectKey keyProperty="illegalWordTreeId" resultType="int" order="AFTER">
+			select LAST_INSERT_ID() 
+		</selectKey> 
+		INSERT INTO  tbl_illegalWordTree (treeTitle,parentId,wholePath,createTime,treeExp)
+		VALUES (#{treeTitle,jdbcType=VARCHAR},#{parentId,jdbcType=INTEGER},
+		#{wholePath,jdbcType=INTEGER},#{createTime,jdbcType=DATE},#{treeExp,jdbcType=VARCHAR})
+	</insert>
+	
+	<update id="updateIllegalWordTree" parameterType="IllegalWordTree">
+		update tbl_illegalWordTree set treeTitle
+		= #{treeTitle}, parentId =
+		#{parentId}, wholePath =
+		#{wholePath}, createTime = #{createTime},
+		treeExp = #{treeExp} where illegalWordTreeId =
+		#{illegalWordTreeId}
+	</update>
+	
+	
+	<!--重名判断-->
+	<!-- 返回当前除了指定行业外的其他所有行业名称集合 -->
+	<select id="getAllOtherIllegalWordTreeTradeNames" parameterType="int" resultType="String" flushCache="true">
+		SELECT treeTitle FROM tbl_illegalWordTree WHERE illegalWordTreeId != #{backNodeId} AND parentId = -1
+	</select>
+	<!-- 返回指定节点的直接子节点的所有名字列表 -->
+	<select id="getIllegalWordTreeSubNodeNames" parameterType="int" resultType="String">
+	   select treeTitle from tbl_illegalWordTree BT where BT.parentId = #{parentId} 
+	</select>
+	<!-- 返回指定节点及其直接子节点的所有名字列表 -->
+	<select id="getIllegalWordTreeSelfAndSubNames" parameterType="int" resultType="String">
+	   select treeTitle from tbl_illegalWordTree BT where BT.parentId = #{parentId} or BT.illegalWordTreeId = #{parentId}
+	</select>
+	<!-- 指定节点返回其父节点、兄弟节点及其直接孩子节点的所有名字列表(不包含该节点自身) -->
+	<select id="getIllegalWordTree3GNodeNamesById" resultType="String">
+	   select treeTitle from tbl_illegalWordTree BT where (BT.parentId in (#{parentId},#{backNodeId}) or BT.illegalWordTreeId = #{parentId}) and BT.illegalWordTreeId != #{backNodeId}
+	</select>
+	
+	<!-- 删除指定的后台树节点 -->
+	<delete id="delIllegalWordTreeNodeById" parameterType="int">
+		DELETE FROM tbl_illegalWordTree WHERE illegalWordTreeId = #{illegalWordTreeId}
+	</delete>
+	
+		<!-- 返回指定编号的节点的直接孩子列表 -->
+	<select id="loadIllegalWordTreeDirectChildrenById"  parameterType="int" resultType="IllegalWordTree" flushCache="true">
+		SELECT * FROM tbl_illegalWordTree WHERE parentId = #{parentId} ORDER BY illegalWordTreeId ASC 
+	</select>
+	
+</mapper>

@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:aop="http://www.springframework.org/schema/aop" xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+	http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+	http://www.springframework.org/schema/context
+	http://www.springframework.org/schema/context/spring-context-3.0.xsd
+	http://www.springframework.org/schema/aop
+	http://www.springframework.org/schema/aop/spring-aop-3.0.xsd
+	http://www.springframework.org/schema/tx
+	http://www.springframework.org/schema/tx/spring-tx-3.0.xsd">
+
+	<!-- 注入nlp实体表映射mapper -->
+	<!-- 注入analyzer表映射 -->
+	<bean id="analyzerMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+		<property name="mapperInterface" value="ims.nlp.entity.dao.AnalyzerMapper"></property>
+		<property name="sqlSessionFactory" ref="sqlSessionFactory"></property>
+	</bean>
+	<!-- 注入mapper类到service类 -->
+	<bean id="analyzerService" class="ims.nlp.entity.service.AnalyzerServiceImpl">
+		<property name="analyzerMapper" ref="analyzerMapper"></property>
+	</bean>
+
+	<!-- 注入classicTextSet表映射 -->
+	<bean id="classicTextSetMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+		<property name="mapperInterface" value="ims.nlp.entity.dao.ClassicTextSetMapper"></property>
+		<property name="sqlSessionFactory" ref="sqlSessionFactory"></property>
+	</bean>
+	<bean id="classicTextSetService" class="ims.nlp.entity.service.ClassicTextSetServiceImpl">
+		<property name="classicTextSetMapper" ref="classicTextSetMapper"></property>
+	</bean>
+
+	<!-- 注入corpusText表映射 -->
+	<bean id="corpusTextMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+		<property name="mapperInterface" value="ims.nlp.entity.dao.CorpusTextMapper"></property>
+		<property name="sqlSessionFactory" ref="sqlSessionFactory"></property>
+	</bean>
+	<bean id="corpusTextService" class="ims.nlp.entity.service.CorpusTextServiceImpl">
+		<property name="corpusTextMapper" ref="corpusTextMapper"></property>
+	</bean>
+
+	<!-- 注入index表映射 -->
+	<bean id="indexMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+		<property name="mapperInterface" value="ims.nlp.entity.dao.IndexMapper"></property>
+		<property name="sqlSessionFactory" ref="sqlSessionFactory"></property>
+	</bean>
+	<bean id="indexService" class="ims.nlp.entity.service.IndexServiceImpl">
+		<property name="indexMapper" ref="indexMapper"></property>
+	</bean>
+
+	<!-- 注入classifierModel表映射 -->
+	<bean id="classifierModelMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+		<property name="mapperInterface" value="ims.nlp.entity.dao.ClassifierModelMapper"></property>
+		<property name="sqlSessionFactory" ref="sqlSessionFactory"></property>
+	</bean>
+	<bean id="classifierModelService" class="ims.nlp.entity.service.ClassifierModelServiceImpl">
+		<property name="classifierModelMapper" ref="classifierModelMapper"></property>
+	</bean>
+
+	<!-- 注入classifyLog表映射 -->
+	<bean id="classifyLogMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+		<property name="mapperInterface" value="ims.nlp.entity.dao.ClassifyLogMapper"></property>
+		<property name="sqlSessionFactory" ref="sqlSessionFactory"></property>
+	</bean>
+	<bean id="classifyLogService" class="ims.nlp.entity.service.ClassifyLogServiceImpl">
+		<property name="classifyLogMapper" ref="classifyLogMapper"></property>
+	</bean>
+
+	<!-- 注入classifyResBuff表映射 -->
+	<bean id="classifyResBuffMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+		<property name="mapperInterface" value="ims.nlp.entity.dao.ClassifyResBuffMapper"></property>
+		<property name="sqlSessionFactory" ref="sqlSessionFactory"></property>
+	</bean>
+	<bean id="classifyResBuffService" class="ims.nlp.entity.service.ClassifyResBuffServiceImpl">
+		<property name="classifyResBuffMapper" ref="classifyResBuffMapper"></property>
+	</bean>
+
+	<!-- 注入classifySetEvalution表映射 -->
+	<bean id="classifySetEvalutionMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+		<property name="mapperInterface"
+			value="ims.nlp.entity.dao.ClassifySetEvalutionMapper"></property>
+		<property name="sqlSessionFactory" ref="sqlSessionFactory"></property>
+	</bean>
+	<bean id="classifySetEvalutionService" class="ims.nlp.entity.service.ClassifySetEvalutionServiceImpl">
+		<property name="classifySetEvalutionMapper" ref="classifySetEvalutionMapper"></property>
+	</bean>
+
+	<!-- 注入classifyMission表映射 -->
+	<bean id="classifyMissionMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+		<property name="mapperInterface" value="ims.nlp.entity.dao.ClassifyMissionMapper"></property>
+		<property name="sqlSessionFactory" ref="sqlSessionFactory"></property>
+	</bean>
+	<bean id="classifyMissionService" class="ims.nlp.entity.service.ClassifyMissionServiceImpl">
+		<property name="classifyMissionMapper" ref="classifyMissionMapper"></property>
+	</bean>
+
+</beans>

@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="ims.nlp.entity.dao.ClassifySetEvalutionMapper">
+	<!-- 关联映射 -->
+	<resultMap type="ClassifySetEvalution" id="classifySetEvalutionMap"
+		autoMapping="true">
+		<id column="evalutionId" property="evalutionId" />
+		<id column="classifyLogId" property="classifyLogId" />
+		<id column="setId" property="setId" />
+		<association property="classifyLog" column="classifyLogId"
+			javaType="ClassifyLog" select="getClassifyLogById">
+		</association>
+		<association property="classicTextSet" column="setId"
+			javaType="ClassicTextSet" select="getClassicTextSetById">
+		</association>
+	</resultMap>
+
+	<!-- 关联嵌套查询，不是本表的查询， 需要清空缓存，查询方法名前缀改为“get”以示区别 -->
+	<select id="getClassifyLogById" parameterType="String"
+		resultType="ClassifyLog">
+		select * from tbl_classifyLog where classifyLogId =
+		#{classifyLogId}
+	</select>
+	<select id="getClassicTextSetById" parameterType="int"
+		resultType="ClassicTextSet">
+		select * from tbl_classicTextSet where setId = #{setId}
+	</select>
+
+	<insert id="add" parameterType="ClassifySetEvalution">
+		insert into
+		tbl_classifySetEvalution (classifyLogId, setId, setPrecisionRatio,
+		setRecallRatio, setF1TestValue) value (#{classifyLogId}, #{setId},
+		#{setPrecisionRatio}, #{setRecallRatio}, #{setF1TestValue})
+	</insert>
+
+	<delete id="deleteById" parameterType="int">
+		delete from
+		tbl_classifySetEvalution where evalutionId = #{evalutionId}
+	</delete>
+
+	<update id="update" parameterType="ClassifySetEvalution">
+		update
+		tbl_classifySetEvalution set classifyLogId = #{classifyLogId},
+		setId =
+		#{setId}, setPrecisionRatio = #{setPrecisionRatio},
+		setRecallRatio =
+		#{setRecallRatio}, setF1TestValue = #{setF1TestValue}
+		where evalutionId
+		= #{evalutionId}
+	</update>
+
+	<select id="loadById" parameterType="int" resultMap="classifySetEvalutionMap">
+		select *
+		from tbl_classifySetEvalution where evalutionId = #{evalutionId}
+	</select>
+
+	<select id="listAll" resultMap="classifySetEvalutionMap">
+		select * from
+		tbl_classifySetEvalution
+	</select>
+
+</mapper>

@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:aop="http://www.springframework.org/schema/aop" xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+	http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+	http://www.springframework.org/schema/context
+	http://www.springframework.org/schema/context/spring-context-3.0.xsd
+	http://www.springframework.org/schema/aop
+	http://www.springframework.org/schema/aop/spring-aop-3.0.xsd
+	http://www.springframework.org/schema/tx
+	http://www.springframework.org/schema/tx/spring-tx-3.0.xsd">
+
+	<!-- 创建mongoService实体 -->
+	<bean id="retrievalMongoService" class="ims.nlp.mongo.service.RetrievalMongoServiceImpl">
+	</bean>
+	<bean id="searchMpMongoService" class="ims.nlp.mongo.service.SearchMpMongoServiceImpl">
+	</bean>
+	<bean id="productIndexMongoService" class="ims.nlp.mongo.service.ProductIndexMongoServiceImpl">
+	</bean>
+
+	<!-- 初始化所有原始情报库索引操作实体 -->
+	<bean id="initAllContentIndex" class="ims.nlp.lucene.index.InitAllContentIndex">
+		<property name="retrievalMongoService" ref="retrievalMongoService"></property>
+		<property name="handleIndexResult" ref="handleIndexResult"></property>
+	</bean>
+
+	<!-- 向索引中添加内容操作实体 -->
+	<bean id="addNewContentIndex" class="ims.nlp.lucene.index.AddNewContentIndex">
+		<property name="retrievalMongoService" ref="retrievalMongoService"></property>
+	</bean>
+
+	<!-- 索引中文档管理操作实体 -->
+	<bean id="indexDocManagment" class="ims.nlp.lucene.index.IndexDocManagment"
+		scope="prototype">
+		<property name="retrievalMongoService" ref="retrievalMongoService"></property>
+		<property name="handleIndexResult" ref="handleIndexResult"></property>
+		<property name="initAllContentIndex" ref="initAllContentIndex"></property>
+		<property name="initAllProductIndex" ref="initAllProductIndex"></property>
+		<property name="taskLogService" ref="taskLogService"></property>
+		<property name="addNewContentIndex" ref="addNewContentIndex"></property>
+	</bean>
+
+	<!-- 二次检索过滤实体，可能被多线程代码重复调用，采用多态模式注入 -->
+	<bean id="searchResContentFilter" class="ims.nlp.lucene.search.SearchResContentFilter"
+		scope="prototype">
+		<property name="retrievalMongoService" ref="retrievalMongoService"></property>
+	</bean>
+
+	<!--
+		searchMapBufferManagment, smartSearchMpBuffManagment
+		不采用spring管理，手动创建对象(new)
+	-->
+
+	<!-- 初始化所有产品库内容索引操作实体 -->
+	<bean id="initAllProductIndex" class="ims.nlp.lucene.index.branch.InitAllProductIndex">
+		<property name="productIndexMongoService" ref="productIndexMongoService"></property>
+		<property name="handleIndexResult" ref="handleIndexResult"></property>
+	</bean>
+
+</beans>

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- 行业树根节点主题关键词 fxp -->
+<mapper namespace="ims.subjectTree.dao.StopWordsMapper">
+
+<!-- 返回StopWords中所有值 -->
+<select id="loadAllStopWords" resultType="StopWords" flushCache="true">
+	SELECT  * FROM tbl_stopWords TW ORDER BY TW.stopWordId ASC
+</select>
+<!-- 删除指定后台行业节点下的所有关键字 -->
+<delete id="delStopWordsByStopWordsId" parameterType="int">
+ 	DELETE FROM tbl_stopWords WHERE stopWordTreeId = #{backNodeId}
+</delete>
+
+<!-- 添加行业关键词 -->
+<insert id="insertStopWords" parameterType="StopWords" useGeneratedKeys="true" >
+     <selectKey keyProperty="stopWordId" resultType="int" order="AFTER">
+			select LAST_INSERT_ID() 
+		</selectKey> 
+	INSERT INTO tbl_stopWords (stopWordTreeId,stopWordCnt,saveDate)
+	VALUES(#{stopWordTreeId,jdbcType=INTEGER},
+		#{stopWordCnt,jdbcType=VARCHAR},#{saveDate,jdbcType=DATE})
+</insert>
+<!-- 根据subjectId返回行业关键词 -->
+<select id="loadStopWordsByStopWordTreeId" parameterType="int" resultType="StopWords" flushCache="true">
+	SELECT * FROM tbl_stopWords WHERE stopWordTreeId=#{stopWordTreeId} 
+</select>
+
+</mapper>

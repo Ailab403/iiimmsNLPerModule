@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="ims.synWords.dao.SynWordsMapper">
+	<cache />
+	
+    <!-- 获取所有同义词_WQS -->
+ 	<select id="listSynWordsAll" resultType="SynWords" flushCache="true">
+		select * from tbl_synwords order by synWordId;
+	</select>
+	
+	<!-- 插入某条同义词_WQS  -->
+   <insert id="addSynWords" parameterType="SynWords" flushCache="true">
+    insert into tbl_synwords(synWordId, mainWordCnt,synWordStr,saveDate)
+    values (#{synWordId},
+		    #{mainWordCnt}, 
+		    #{synWordStr},
+		    #{saveDate}
+    		)
+   </insert>
+	
+	<!-- 删除某条同义词_WQS -->
+  	<delete id="deleteSynWordsById" parameterType="int">
+  		delete from tbl_synwords where synWordId = #{synWordId}
+  	</delete>
+  	
+  	<!-- 更新修改某条站点信息 -->
+   <update id="updateSynWords" parameterType="SynWords">
+    update tbl_synwords set 
+	       mainWordCnt  	 = #{mainWordCnt,  jdbcType=VARCHAR},
+	       synWordStr        = #{synWordStr,   jdbcType=VARCHAR},
+	       saveDate          = #{saveDate}
+    where  synWordId         = #{synWordId}
+   </update>
+		
+  <!-- 通过类别编号显示所有深网站点信息  -->
+  <select id="loadSynWordsById" parameterType="int" resultType="SynWords">
+		select* from tbl_synwords where synWordId = #{synWordId}
+  </select>
+</mapper>

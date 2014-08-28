@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:aop="http://www.springframework.org/schema/aop" xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+	http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+	http://www.springframework.org/schema/context
+	http://www.springframework.org/schema/context/spring-context-3.0.xsd
+	http://www.springframework.org/schema/aop
+	http://www.springframework.org/schema/aop/spring-aop-3.0.xsd
+	http://www.springframework.org/schema/tx
+	http://www.springframework.org/schema/tx/spring-tx-3.0.xsd">
+
+	<!-- weka分类模型管理操作实体 -->
+	<bean id="wekaClassifierModelManagment" class="ims.nlp.classifier.weka.WekaClassifierModelManagment">
+		<property name="classifierModelService" ref="classifierModelService"></property>
+	</bean>
+
+	<!-- weka分类执行操作实体 -->
+	<bean id="wekaClassifyingTextOnDisk" class="ims.nlp.classifier.weka.WekaClassifyingTextOnDisk">
+		<property name="classifierModelService" ref="classifierModelService"></property>
+		<property name="classicTextSetService" ref="classicTextSetService"></property>
+	</bean>
+
+	<!-- 测试文件准备功能操作实体 -->
+	<bean id="prepareTextForClassifying" class="ims.nlp.classifier.util.PrepareTextForClassifying">
+		<property name="corpusTextService" ref="corpusTextService"></property>
+	</bean>
+
+	<!-- 分类结果测评功能操作实体 -->
+	<bean id="evalutionWekaClassifyRes" class="ims.nlp.classifier.util.EvalutionWekaClassifyRes">
+		<property name="classifyLogService" ref="classifyLogService"></property>
+		<property name="classifyResBuffService" ref="classifyResBuffService"></property>
+		<property name="classifySetEvalutionService" ref="classifySetEvalutionService"></property>
+		<property name="classicTextSetService" ref="classicTextSetService"></property>
+	</bean>
+
+	<!-- 分类任务执行操作实体 -->
+	<bean id="execWekaClassifyingMission" class="ims.nlp.classifier.exec.ExecWekaClassifyingMission">
+		<property name="handleClassifyMissionResult" ref="handleClassifyMissionResult"></property>
+		<property name="handleClassifyLogResult" ref="handleClassifyLogResult"></property>
+		<property name="wekaClassifyingTextOnDisk" ref="wekaClassifyingTextOnDisk"></property>
+		<property name="prepareTextForClassifying" ref="prepareTextForClassifying"></property>
+		<property name="handleClassifyResBuffResult" ref="handleClassifyResBuffResult"></property>
+		<property name="evalutionWekaClassifyRes" ref="evalutionWekaClassifyRes"></property>
+	</bean>
+
+</beans>

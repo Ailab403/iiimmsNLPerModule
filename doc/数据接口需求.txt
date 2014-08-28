@@ -1,0 +1,27 @@
+
+
+
+
+1、站点类型采集主题页面成功总页面数
+
+方法名：getSiteCategoryCrawlThemeFetchSuccNum(String siteCategoryId，Date startTime, Date endTime)
+参数名：siteCategoryId 站点类型Id
+	startTime 采集开始时间
+	endTiem 采集结束时间
+返回值：int num 该站点类型下面所有站点采集成功的全部主题页面数之和
+
+2、站点采集主题页面成功总页面数
+
+方法名：getSiteCrawlThemeFetchSuccNum(String siteId，Date startTime, Date endTime)
+参数名：siteId 站点Id
+	startTime 采集开始时间
+	endTiem 采集结束时间
+返回值：int num 该站点采集成功的所有主题页面数之和
+
+3、站点类型采集主题页面成功页面数
+
+方法名：getThemeFetchSuccNum(String themeId，Date startTime, Date endTime)
+参数名：themeId 主题Id
+	startTime 采集开始时间
+	endTiem 采集结束时间
+返回值：int num 该主题集成功的页面数

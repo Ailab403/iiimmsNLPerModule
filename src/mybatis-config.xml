@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-config.dtd">
+
+<configuration>
+	<!-- 自动扫描命名类包  -->
+	<typeAliases>
+		<!-- 不良信息自定义 dd -->
+		<typeAlias alias="IllegalWords" type="ims.subjectTree.model.IllegalWords" />
+		<typeAlias alias="IllegalWordTree" type="ims.subjectTree.model.IllegalWordTree" />
+		<typeAlias alias="StopWords" type="ims.subjectTree.model.StopWords" />
+		<typeAlias alias="StopWordTree" type="ims.subjectTree.model.StopWordTree" />
+		<typeAlias alias="NetWords" type="ims.subjectTree.model.NetWords" />
+		<typeAlias alias="NetWordTree" type="ims.subjectTree.model.NetWordTree" />
+
+		<!-- 同义词的配置_WQS_2014-06-10  -->
+		<typeAlias alias="SynWords" type="ims.synWords.model.SynWords" />
+		<!-- 语料产品的配置_WQS_2014-06-24 -->
+		<typeAlias alias="CorpusProduct" type="ims.corpusProduct.model.CorpusProduct" />
+
+		<!-- superhy -->
+		<package name="ims.site.model" />
+		<package name="ims.crawlerLog.model" />
+		<package name="ims.nlp.entity.model" />
+	</typeAliases>
+
+	<!-- 将mapper文件加入到配置文件中 -->
+	<mappers>
+		<!-- ims crawler module -->
+		<mapper resource="ims/site/dao/SiteCategoryMapper.xml" />
+		<mapper resource="ims/site/dao/ExtraParameMapper.xml" />
+		<mapper resource="ims/site/dao/FetchPagerObjMapper.xml" />
+		<mapper resource="ims/site/dao/FetchParameMapper.xml" />
+		<mapper resource="ims/site/dao/GrabParameMapper.xml" />
+		<mapper resource="ims/site/dao/GrabUserParameMapper.xml" />
+		<mapper resource="ims/site/dao/PostMapper.xml" />
+		<mapper resource="ims/site/dao/SiteMapper.xml" />
+		<mapper resource="ims/site/dao/ThemeMapper.xml" />
+		<mapper resource="ims/site/dao/ToolMapper.xml" />
+
+		<mapper resource="ims/crawlerLog/dao/SiteLogMapper.xml" />
+		<mapper resource="ims/crawlerLog/dao/TaskLogMapper.xml" />
+		<mapper resource="ims/crawlerLog/dao/ThemeLogMapper.xml" />
+
+		<!-- nlp entity by superhy -->
+		<mapper resource="ims/nlp/entity/dao/AnalyzerMapper.xml" />
+		<mapper resource="ims/nlp/entity/dao/ClassicTextSetMapper.xml" />
+		<mapper resource="ims/nlp/entity/dao/CorpusTextMapper.xml" />
+		<mapper resource="ims/nlp/entity/dao/IndexMapper.xml" />
+		<mapper resource="ims/nlp/entity/dao/ClassifierModelMapper.xml" />
+		<mapper resource="ims/nlp/entity/dao/ClassifyLogMapper.xml" />
+		<mapper resource="ims/nlp/entity/dao/ClassifyResBuffMapper.xml" />
+		<mapper resource="ims/nlp/entity/dao/ClassifySetEvalutionMapper.xml" />
+		<mapper resource="ims/nlp/entity/dao/ClassifyMissionMapper.xml" />
+
+		<!-- 不良信息自定义 dd -->
+		<mapper resource="ims/subjectTree/dao/IllegalWordsMapper.xml" />
+		<mapper resource="ims/subjectTree/dao/IllegalWordTreeMapper.xml" />
+		<mapper resource="ims/subjectTree/dao/StopWordsMapper.xml" />
+		<mapper resource="ims/subjectTree/dao/StopWordTreeMapper.xml" />
+		<mapper resource="ims/subjectTree/dao/NetWordsMapper.xml" />
+		<mapper resource="ims/subjectTree/dao/NetWordTreeMapper.xml" />
+
+		<!-- 同义词的配置_WQS_2014-06-10 -->
+		<mapper resource="ims/synWords/dao/SynWordsMapper.xml" />
+		<!-- 语料产品的配置_WQS_2014-06-24 -->
+		<mapper resource="ims/corpusProduct/dao/CorpusProductMapper.xml" />
+	</mappers>
+
+
+
+</configuration>

@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="ims.nlp.entity.dao.ClassifyMissionMapper">
+
+	<insert id="add" parameterType="ClassifyMission">
+		insert into tbl_classifyMission
+		(missionId, startTime, endTime, modelNum, missionStatus, missionExp)
+		value (#{missionId}, #{startTime}, #{endTime}, #{modelNum},
+		#{missionStatus}, #{missionExp})
+	</insert>
+
+	<delete id="deleteById" parameterType="String">
+		delete from
+		tbl_classifyMission where missionId = #{missionId}
+	</delete>
+
+	<update id="update" parameterType="ClassifyMission">
+		update tbl_classifyMission set
+		startTime = #{startTime}, endTime = #{endTime}, modelNum =
+		#{modelNum}, missionStatus = #{missionStatus}, missionExp =
+		#{missionExp} where missionId = #{missionId}
+	</update>
+
+	<select id="loadById" parameterType="String" resultType="ClassifyMission">
+		select *
+		from tbl_classifyMission where missionId = #{missionId}
+	</select>
+	
+	<select id="listAll" resultType="ClassifyMission">
+		select * from tbl_classifyMission
+	</select>
+
+</mapper>
