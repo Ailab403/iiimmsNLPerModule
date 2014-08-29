@@ -47,5 +47,10 @@
  	<select id="add" resultMap="CorpusProductMap" flushCache="true" parameterType="int">
 		update  tbl_corpusproduct set annexPath = #{annexPath} where corpusProductId = #{corpusProductId}
  	</select>
+ 	
+ 	<!-- superhy -->
+ 	<select id="loadByNodeId" resultMap="CorpusProductMap" parameterType="String">
+ 		select * from tbl_corpusProduct where nodeId = #{nodeId}
+ 	</select>
 	
 </mapper>

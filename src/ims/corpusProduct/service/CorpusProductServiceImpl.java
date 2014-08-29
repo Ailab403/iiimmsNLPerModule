@@ -71,6 +71,11 @@ public class CorpusProductServiceImpl implements CorpusProductService {
 		return "ok";
 	}
 
+	/* superhy */
+	public CorpusProduct loadByNodeId(String nodeId) {
+		return this.corpusProductMapper.loadByNodeId(nodeId);
+	}
+
 	/*-------------------------------------------------------------setter/getter-----------------------------------------------------------*/
 	public CorpusProductMapper getCorpusProductMapper() {
 		return corpusProductMapper;

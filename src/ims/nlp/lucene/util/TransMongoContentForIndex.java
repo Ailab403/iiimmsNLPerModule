@@ -1,5 +1,7 @@
 package ims.nlp.lucene.util;
 
+import ims.corpusProduct.model.CorpusProduct;
+
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -71,7 +73,8 @@ public class TransMongoContentForIndex {
 	 * @return
 	 */
 	public static Map<String, Object> produceProductIndexContent(
-			DBObject productObject, String collectionName) {
+			DBObject productObject, CorpusProduct corpusProduct,
+			String collectionName) {
 
 		// 准备返回的产品内容映射集合（为创建索引使用）
 		Map<String, Object> productIndexContentMap = new HashMap<String, Object>();
@@ -81,6 +84,8 @@ public class TransMongoContentForIndex {
 		productIndexContentMap.put("nodeId", productObject.get("nodeId"));
 		productIndexContentMap.put("nodeContent", productObject
 				.get("nodeContent"));
+		productIndexContentMap.put("corpusProductName", corpusProduct
+				.getCorpusProductName());
 
 		return productIndexContentMap;
 	}

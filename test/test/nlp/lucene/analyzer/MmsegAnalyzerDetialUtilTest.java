@@ -29,7 +29,7 @@ public class MmsegAnalyzerDetialUtilTest {
 		// 对比其他分词器
 		Analyzer a3 = new IKAnalyzer(true);
 
-		String txt = "中华人民共和国，你这个人真吊爆，一不做二不休，胡锦涛，习近平，犀利哥，金瓶梅，肉蒲团，苍井空;本色";
+		String txt = "古代，中华人民共和国，你这个人真吊爆，一不做二不休，胡锦涛，习近平，犀利哥，金瓶梅，肉蒲团，苍井空;本色";
 		AnalyzerUtils.displayToken(txt, a1);
 		AnalyzerUtils.displayToken(txt, a2);
 

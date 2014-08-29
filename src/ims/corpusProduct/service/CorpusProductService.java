@@ -11,5 +11,7 @@ public interface CorpusProductService {
 
 	public List<CorpusProduct> lodeBySetId(int setId);
 	
+	public CorpusProduct loadByNodeId(String nodeId);
+	
 	public String insertAnnexPath(CorpusProduct corpusProduct);
 }

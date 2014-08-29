@@ -12,5 +12,7 @@ public interface CorpusProductMapper {
 	
 	List <CorpusProduct> lodeBySetId(int setId);        // 通过类别编号查找语料产品
 	
+	CorpusProduct loadByNodeId(String nodeId); // 根据nodeId查询单一记录
+	
 	void add(CorpusProduct corpusProduct);              // 插入对象
 }

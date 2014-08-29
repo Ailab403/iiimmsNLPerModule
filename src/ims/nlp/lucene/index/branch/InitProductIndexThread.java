@@ -1,5 +1,7 @@
 package ims.nlp.lucene.index.branch;
 
+import ims.corpusProduct.model.CorpusProduct;
+import ims.corpusProduct.service.CorpusProductService;
 import ims.crawler.cache.ApplicationContextFactory;
 import ims.nlp.lucene.index.WriteDocIntoIndex;
 import ims.nlp.lucene.util.TransMongoContentForIndex;
@@ -29,6 +31,12 @@ public class InitProductIndexThread implements Callable<Boolean> {
 	// 索引所建得得地址查询参数
 	private String indexProductContentPath;
 
+	private ApplicationContext appContext = ApplicationContextFactory.appContext;
+	private ProductIndexMongoService productIndexMongoService = (ProductIndexMongoService) appContext
+			.getBean("productIndexMongoService");
+	private CorpusProductService corpusProductService = (CorpusProductService) appContext
+			.getBean("corpusProductService");
+
 	public InitProductIndexThread(String collectionName, Analyzer analyzer,
 			String indexProductContentPath) {
 		super();
@@ -44,10 +52,6 @@ public class InitProductIndexThread implements Callable<Boolean> {
 	 */
 	public List<DBObject> getProductsInColl() {
 
-		ApplicationContext appContext = ApplicationContextFactory.appContext;
-		ProductIndexMongoService productIndexMongoService = (ProductIndexMongoService) appContext
-				.getBean("productIndexMongoService");
-
 		List<DBObject> productObjects = productIndexMongoService
 				.findAllProductInColl(this.collectionName);
 
@@ -61,8 +65,14 @@ public class InitProductIndexThread implements Callable<Boolean> {
 	 * @return
 	 */
 	public Map<String, Object> transProductContent(DBObject productObject) {
+
+		// 找出mysql数据库中对应的信息
+		CorpusProduct corpusProduct = this.corpusProductService
+				.loadByNodeId((String) productObject.get("nodeId"));
+
 		Map<String, Object> productIndexContentMap = TransMongoContentForIndex
-				.produceProductIndexContent(productObject, this.collectionName);
+				.produceProductIndexContent(productObject, corpusProduct,
+						this.collectionName);
 
 		return productIndexContentMap;
 	}
@@ -77,7 +87,9 @@ public class InitProductIndexThread implements Callable<Boolean> {
 			Map<String, Object> productIndexContentMap) {
 
 		// 取出需要建立索引的域值
-		String nodeContent = (String) productIndexContentMap.get("nodeContent");
+		String nodeContent = "";
+		nodeContent += productIndexContentMap.get("corpusProductName") + "\r\n";
+		nodeContent += productIndexContentMap.get("nodeContent");
 		String collectionName = (String) productIndexContentMap
 				.get("collectionName");
 		int siteId = (Integer) productIndexContentMap.get("siteId");
