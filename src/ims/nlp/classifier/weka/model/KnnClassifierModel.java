@@ -29,6 +29,7 @@ public class KnnClassifierModel {
 		}
 
 		IBk kNNClassifier = new IBk(k);
+		// 设置距离权重的计算方法
 		kNNClassifier.setDistanceWeighting(new SelectedTag(
 				IBk.WEIGHT_SIMILARITY, IBk.TAGS_WEIGHTING));
 

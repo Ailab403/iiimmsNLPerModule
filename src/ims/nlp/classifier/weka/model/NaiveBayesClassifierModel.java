@@ -12,7 +12,7 @@ public class NaiveBayesClassifierModel {
 
 	public Classifier produceModel(String modelParame) {
 
-		Classifier naiveBayesClassifier = new NaiveBayes();
+		NaiveBayes naiveBayesClassifier = new NaiveBayes();
 
 		return naiveBayesClassifier;
 	}

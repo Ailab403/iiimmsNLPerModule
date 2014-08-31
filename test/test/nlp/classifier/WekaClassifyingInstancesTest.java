@@ -14,17 +14,15 @@ public class WekaClassifyingInstancesTest {
 	// directory
 	private String segmentSourceDir = "./file/nlp_classifier_test";
 	private String segmentTargetDir = "./file/nlp_weka/analyzed_classifying_content";
-	// private String analyzedContentPath =
-	// "./file/nlp_weka/analyzed_classifying_content";
+	// private String analyzedContentPath = "./file/nlp_weka/analyzed_classifying_content";
+	
 	// file
 	private String dataRawPath = "./file/nlp_weka/classifying_arff/dataRaw.arff";
 	private String dataFilterPath = "./file/nlp_weka/classifying_arff/dataFilter.arff";
 	private String labeledDataArffPath = "./file/nlp_weka/train_arff/dataFilter.arff";
 	private String unlabeledDataArffPath = "./file/nlp_weka/classifying_arff/dataFilter.arff";
-	// private String labeledDataArffPath =
-	// "./file/nlp_weka/train_arff/contact-lenses.arff";
-	// private String unlabeledDataArffPath =
-	// "./file/nlp_weka/classifying_arff/contact-lenses.arff";
+	// private String labeledDataArffPath = "./file/nlp_weka/train_arff/contact-lenses.arff";
+	// private String unlabeledDataArffPath = "./file/nlp_weka/classifying_arff/contact-lenses.arff";
 
 	private String modelPath = "./file/nlp_weka/model/KnnClassifier.model";
 	// private String modelPath = "./file/nlp_weka/model/libSVMClassifier.model";

@@ -13,7 +13,7 @@ public class LibSVMClassifierModel {
 
 	public Classifier produceModel(String modelParame) {
 
-		Classifier libSVMClassifier = new WLSVM();
+		WLSVM libSVMClassifier = new WLSVM();
 
 		try {
 			String[] options = Utils
