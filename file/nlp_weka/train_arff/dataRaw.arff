@@ -1,6 +1,0 @@
-@relation D__workspace_superhy_web_8.6_iiimmsNLPerModule_._file_nlp_weka_analyzed_train_content-weka.filters.unsupervised.attribute.StringToNominal-Rlast
-
-@attribute text string
-@attribute @@class@@ {}
-
-@data
