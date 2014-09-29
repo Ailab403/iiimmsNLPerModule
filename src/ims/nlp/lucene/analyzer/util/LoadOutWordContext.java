@@ -15,7 +15,7 @@ import java.util.Set;
 
 public class LoadOutWordContext {
 
-	public static Set<String> wordSet = new HashSet<String>();
+	public static Set<String> wordAllSet = new HashSet<String>();
 	public static Set<String> wordMySet = new HashSet<String>();
 
 	/**
@@ -41,13 +41,13 @@ public class LoadOutWordContext {
 											+ "\\words-my.dic")), "UTF-8"));
 
 			// 原有单词缓存库为空
-			if (wordSet.size() == 0) {
+			if (wordAllSet.size() == 0) {
 
 				String line = brWord.readLine();
 				while (line != null) {
 					System.out.println("加载词条：" + line);
 
-					wordSet.add(line);
+					wordAllSet.add(line);
 					line = brWord.readLine();
 				}
 
@@ -59,7 +59,7 @@ public class LoadOutWordContext {
 					line = brWordMy.readLine();
 				}
 
-				wordSet.addAll(wordMySet);
+				wordAllSet.addAll(wordMySet);
 			}
 
 			BufferedReader brWordOut = new BufferedReader(new FileReader(
@@ -69,7 +69,7 @@ public class LoadOutWordContext {
 			while (line != null) {
 				System.out.println("从外部引入词条：" + line);
 
-				if (!wordSet.contains(line)) {
+				if (!wordAllSet.contains(line)) {
 					wordMySet.add(line);
 				}
 				line = brWordOut.readLine();
@@ -102,10 +102,10 @@ public class LoadOutWordContext {
 	/**
 	 * 导入外部词条文件
 	 * 
-	 * @param wordSet
+	 * @param wordAllSet
 	 * @return
 	 */
-	public static boolean loadWordFile(Set<String> wordSet) {
+	public static boolean loadWordFile(Set<String> wordOutSet) {
 
 		try {
 			/*
@@ -122,13 +122,13 @@ public class LoadOutWordContext {
 											+ "\\words-my.dic")), "UTF-8"));
 
 			// 原有单词缓存库为空
-			if (wordSet.size() == 0) {
+			if (wordAllSet.size() == 0) {
 
 				String line = brWord.readLine();
 				while (line != null) {
 					System.out.println("加载词条：" + line);
 
-					wordSet.add(line);
+					wordAllSet.add(line);
 					line = brWord.readLine();
 				}
 
@@ -140,13 +140,12 @@ public class LoadOutWordContext {
 					line = brWordMy.readLine();
 				}
 
-				wordSet.addAll(wordMySet);
+				wordAllSet.addAll(wordMySet);
 			}
 
-			for (String line : wordSet) {
+			for (String line : wordOutSet) {
 				System.out.println("从外部引入词条：" + line);
-
-				if (!wordSet.contains(line)) {
+				if (!wordAllSet.contains(line)) {
 					wordMySet.add(line);
 				}
 			}
